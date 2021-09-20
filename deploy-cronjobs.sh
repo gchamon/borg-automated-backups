@@ -2,13 +2,15 @@
 source constants.sh
 
 borg_backup_scripts_folder=/opt/borg-backups
+borg_backup_logs_folder=/var/log/borg_backups
 mkdir --parents "$borg_backup_scripts_folder"
+mkdir --parents $borg_backup_logs_folder
 
 for folder_to_backup in "${folders_to_backup[@]}"; do
   backup_script="$borg_backup_scripts_folder/$folder_to_backup.sh"
   cat > "$backup_script" <<CRONJOB
 #!/usr/bin/env bash
-exec > >(tee /var/log/borg_backup_$folder_to_backup.log) 2>&1
+exec > >(tee $borg_backup_logs_folder/$folder_to_backup\$(date --iso-8601).log) 2>&1
 echo "[start] \$(date)"
 start=\$(date +%s)
 
