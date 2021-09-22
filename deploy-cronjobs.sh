@@ -14,6 +14,9 @@ exec > >(tee $borg_backup_logs_folder/$folder_to_backup\$(date --iso-8601).log) 
 echo "[start] \$(date)"
 start=\$(date +%s)
 
+source /etc/environment
+export BORG_PASSPHRASE
+
 borg create \\
   -v --stats \\
   --compression lz4 \\
