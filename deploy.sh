@@ -34,3 +34,4 @@ export CRON_SCHEDULE
 
 bash create-repos.sh || true
 bash deploy-cronjobs.sh
+bash configure-logrotate.sh
