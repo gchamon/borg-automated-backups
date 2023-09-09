@@ -7,7 +7,7 @@ echo "" > $logrotate_file
 
 for folder_to_backup in "${folders_to_backup[@]}"; do
     cat >> $logrotate_file <<ROTATE
-/var/log/borg_backups/$folder_to_backup* {
+/var/log/borg_backups/$folder_to_backup.log {
     weekly
     rotate 2
     missingok

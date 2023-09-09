@@ -10,7 +10,7 @@ for folder_to_backup in "${folders_to_backup[@]}"; do
   backup_script="$borg_backup_scripts_folder/$folder_to_backup.sh"
   cat > "$backup_script" <<CRONJOB
 #!/usr/bin/env bash
-exec > >(tee $borg_backup_logs_folder/$folder_to_backup\$(date --iso-8601).log) 2>&1
+exec > >(tee -a $borg_backup_logs_folder/$folder_to_backup.log) 2>&1
 echo "[start] \$(date)"
 start=\$(date +%s)
 
@@ -37,3 +37,10 @@ CRONJOB
   chmod +x "$backup_script"
   echo "$CRON_SCHEDULE root /bin/bash $backup_script" > "/etc/cron.d/borg_backup_$folder_to_backup"
 done
+
+cat > "$borg_backup_scripts_folder"/run_all.sh <<SCRIPT
+for folder_to_backup in ${folders_to_backup[@]}; do
+  backup_script="$borg_backup_scripts_folder/\$folder_to_backup.sh"
+  bash \$backup_script
+done
+SCRIPT
