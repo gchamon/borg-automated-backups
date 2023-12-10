@@ -20,7 +20,7 @@ export BORG_PASSPHRASE
 borg create \\
   -v --stats \\
   --compression lz4 \\
-  $BACKUP_FOLDER/$folder_to_backup::\$(date --iso-8601) \\
+  $BACKUP_FOLDER/$folder_to_backup::\$(date '+%Y-%m-%dT%H:%M:%S') \\
   /$folder_to_backup
 
 borg prune -v --list \\
