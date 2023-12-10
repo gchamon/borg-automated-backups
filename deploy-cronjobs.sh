@@ -17,16 +17,21 @@ start=\$(date +%s)
 source /etc/environment
 export BORG_PASSPHRASE
 
+echo 'creating archive entry...'
 borg create \\
   -v --stats \\
   --compression lz4 \\
   $BACKUP_FOLDER/$folder_to_backup::\$(date '+%Y-%m-%dT%H:%M:%S') \\
   /$folder_to_backup
 
+echo 'pruning archive...'
 borg prune -v --list \\
   --keep-within=7d \\
   --keep-last=1 \\
   $BACKUP_FOLDER/$folder_to_backup
+
+echo 'compacting archive...'
+borg compact $BACKUP_FOLDER/$folder_to_backup
 
 end=\$(date +%s)
 echo "[end] \$(date)"
