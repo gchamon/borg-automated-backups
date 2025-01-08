@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -eo pipefail
+set -euo pipefail
 
 source constants.sh
 
@@ -35,6 +35,6 @@ export BORG_PASSPHRASE
 export BACKUP_FOLDER
 export CRON_SCHEDULE
 
-bash create-repos.sh || true
-bash deploy-cronjobs.sh
-bash configure-logrotate.sh
+source create-repos.sh
+source deploy-cronjobs.sh
+source configure-logrotate.sh
