@@ -2,7 +2,11 @@
 Automated backup solution using Borg Backup for critical system directories.
 
 ## Description
-This project provides scripts to automatically backup important system directories using Borg Backup. It includes automatic log rotation and scheduled backups via cron jobs.
+This project provides scripts to automatically backup important system directories using
+Borg Backup. It includes automatic log rotation and scheduled backups via cron jobs. While
+similar functionality can be achieved using
+[borgmatic](https://github.com/borgmatic-collective/borgmatic), this project offers a
+lightweight, customizable solution focused on basic backup needs.
 
 ## Dependencies
 
@@ -16,7 +20,8 @@ You can install them on Arch Linux with:
 sudo pacman -S borg cronie logrotate
 ```
 
-Note: On Arch Linux, the package is named 'borg' instead of 'borgbackup', and 'cronie' provides the cron functionality.
+Note: On Arch Linux, the package is named 'borg' instead of 'borgbackup', and 'cronie'
+provides the cron functionality.
 
 ## Installation
 1. Clone this repository
