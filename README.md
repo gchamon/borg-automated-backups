@@ -43,7 +43,7 @@ The following directories are backed up by default:
 - /opt
 - /usr
 
-You can modify the directories by editing `env.dist` or creating an `env` file.
+You can change the directories for backup by copying `env.dist` into `env` and modifying it.
 
 ## Usage
 1. Set up the encryption passphrase:
