@@ -1,4 +1,4 @@
-# borg-backups
+# borg-automated-backups
 Automated backup solution using Borg Backup for critical system directories.
 
 ## Description
