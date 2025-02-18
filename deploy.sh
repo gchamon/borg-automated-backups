@@ -31,6 +31,15 @@ if [[ "$exit_fail" == true ]]; then
   exit 1
 fi
 
+if [[ "${DEPLOY_BORG_BINARY:-false}" == "true" ]]; then
+    wget https://github.com/borgbackup/borg/releases/download/1.4.0/borg-linux-glibc228
+    sudo mv borg-linux-glibc228 /usr/bin/borg
+    sudo chmod +x /usr/bin/borg
+    which borg
+    borg --version
+fi
+
+
 export BORG_PASSPHRASE
 export BACKUP_FOLDER
 export CRON_SCHEDULE
