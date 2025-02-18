@@ -30,6 +30,7 @@ provides the cron functionality.
 
 ## Configuration
 ### Environment Variables
+- `DEPLOY_BORG_BINARY`: (Optional) Set to "true" if you want the script to deploy its own Borg binary instead of using the system package. Defaults to false. When set, it downloads the binary from [Borg Backup release page](https://github.com/borgbackup/borg/releases/tag/1.4.0).
 - `BORG_PASSPHRASE`: (Required) The passphrase used to encrypt your backups
 - `BACKUP_FOLDER`: (Optional) The destination folder where backups will be stored
 - `CRON_SCHEDULE`: (Optional) The schedule for automatic backups (in cron format)
@@ -54,6 +55,7 @@ sudo echo "BORG_PASSPHRASE={your_long_passphrase}" >> /etc/environment
 2. Deploy the backup system:
 ```bash
 sudo sh -c 'CRON_SCHEDULE="0 13 * * *" BACKUP_FOLDER=/media/remote-server/backups bash deploy.sh'
+# To use custom Borg binary deployment, set DEPLOY_BORG_BINARY="true"
 ```
 
 The default schedule (0 13 * * *) runs backups daily at 13:00.
