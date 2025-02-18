@@ -32,13 +32,25 @@ if [[ "$exit_fail" == true ]]; then
 fi
 
 if [[ "${DEPLOY_BORG_BINARY:-false}" == "true" ]]; then
-    wget https://github.com/borgbackup/borg/releases/download/1.4.0/borg-linux-glibc228
-    sudo mv borg-linux-glibc228 /usr/bin/borg
-    sudo chmod +x /usr/bin/borg
-    which borg
-    borg --version
+    if command -v borg 2>&1 >/dev/null; then
+        echo borg already deployed
+    else
+        echo deploying borg binary...
+        wget https://github.com/borgbackup/borg/releases/download/1.4.0/borg-linux-glibc228
+        sudo mv borg-linux-glibc228 /usr/bin/borg
+        sudo chmod +x /usr/bin/borg
+        which borg
+    fi
 fi
 
+echo testing borg installation...
+borg_version=$(borg --version | cut -d ' ' -f2)
+if ! [[ "$borg_version" =~ ^1\.4 ]]; then
+    echo borg version is $borg_version, but the required version is 1.4.x
+    exit 1
+else
+    echo borg test passed! borg is at version $borg_version
+fi
 
 export BORG_PASSPHRASE
 export BACKUP_FOLDER
