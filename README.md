@@ -29,7 +29,7 @@ Required packages:
 
 - `borgbackup`: For creating and managing backups
 - `logrotate`: For managing log file rotation
-- `cron`: For scheduling backup jobs
+- `cron` or `systemd`: For scheduling backup jobs
 
 You can install them on Arch Linux with:
 
@@ -56,7 +56,7 @@ echo "BORG_PASSPHRASE={your_long_passphrase}" >> /etc/environment
 From `conf.env`:
 
 - `BACKUP_FOLDER`: (Required) The destination folder where backups will be stored
-- `CRON_SCHEDULE`: (Required) The schedule for automatic backups. The format depends on the trigger mechanism (either `cron`` or`systemd`). Note that the program won't validate the schedule syntax and will accept it as-is.
+- `CRON_SCHEDULE`: (Required) The schedule for automatic backups. The format depends on the trigger mechanism (either `cron` or`systemd`). Note that the program won't validate the schedule syntax and will accept it as-is.
 - `CRON_TRIGGER`: (Required) Which mechanism to trigger the cron jobs. Accepted values: `cron`, `systemd`
 - `DEPLOY_BORG_BINARY`: (Optional) Set to "true" if you want the script to deploy its own Borg binary instead of using the system package. Defaults to false. When set, it downloads the binary from [Borg Backup release page](https://github.com/borgbackup/borg/releases/tag/1.4.0).
 
@@ -79,8 +79,7 @@ You can change the directories for backup by modifying `conf.env`.
 Deploy the backup system:
 
 ```bash
-bash deploy.sh
-# To use custom Borg binary deployment, set DEPLOY_BORG_BINARY="true"
+sudo bash deploy.sh
 ```
 
 The default schedule `0 13 * * *` runs backups daily at 13:00.
