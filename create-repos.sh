@@ -8,6 +8,6 @@ for folder_to_backup in "${FOLDERS_TO_BACKUP[@]}"; do
     else
         echo Initializing borg repo in "$repo_folder"...
         mkdir --parent "$repo_folder"
-        borg init --encryption repokey "$repo_folder" >/dev/null 2>&1
+        borg init --make-parent-dirs --encryption repokey "$repo_folder" >/dev/null 2>&1
     fi
 done
