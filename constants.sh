@@ -1,10 +1,3 @@
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-
-FOLDERS_TO_BACKUP=(home etc srv boot opt usr)
-ENV_FILE="$SCRIPT_DIR"/env
-if [ -f "$ENV_FILE" ]; then
-    source "$ENV_FILE"
-fi
-
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 COLOR_RED='\e[31m'
 COLOR_NONE='\e[0m'

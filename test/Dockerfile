@@ -2,14 +2,14 @@ FROM ubuntu:24.04
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
-    borgbackup \
-    logrotate \
-    cron \
-    wget \
-    && rm -rf /var/lib/apt/lists/*
+  cron \
+  logrotate \
+  sudo \
+  wget \
+  && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
 WORKDIR /app
 
-# Keep container running
-CMD ["tail", "-f", "/dev/null"]
+ENV BORG_PASSPHRASE=2025_such_secure_wow
+

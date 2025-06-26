@@ -1,34 +1,38 @@
 #!/usr/bin/env bash
 set -euo pipefail
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+
+cd "$SCRIPT_DIR"
 
 source constants.sh
+source conf.env
 
 exit_fail=false
 
 if test -n "${BORG_PASSPHRASE-}"; then
-  echo "BORG_PASSPHRASE set"
+    echo "BORG_PASSPHRASE set"
 else
-  echo -e "${COLOR_RED}Please set BORG_PASSPHRASE env var${COLOR_NONE}"
-  exit_fail=true
+    echo -e "${COLOR_RED}Please set BORG_PASSPHRASE env var${COLOR_NONE}"
+    exit_fail=true
 fi
 
 if test -n "${BACKUP_FOLDER-}"; then
-  echo "Using backup folder: $BACKUP_FOLDER"
+    echo "Using backup folder: $BACKUP_FOLDER"
 else
-  echo -e "${COLOR_RED}Please set BACKUP_FOLDER env var${COLOR_NONE}"
-  exit_fail=true
+    echo -e "${COLOR_RED}Please set BACKUP_FOLDER env var${COLOR_NONE}"
+    exit_fail=true
 fi
 
 if test -n "${CRON_SCHEDULE-}"; then
-  echo "Using cron schedule: $CRON_SCHEDULE"
+    echo "Using cron schedule: $CRON_SCHEDULE"
 else
-  echo -e "${COLOR_RED}Please set BACKUP_FOLDER env var${COLOR_NONE}"
-  exit_fail=true
+    echo -e "${COLOR_RED}Please set BACKUP_FOLDER env var${COLOR_NONE}"
+    exit_fail=true
 fi
 
 if [[ "$exit_fail" == true ]]; then
-  echo Fix the errors above and retry. Exiting...
-  exit 1
+    echo Fix the errors above and retry. Exiting...
+    exit 1
 fi
 
 if [[ "${DEPLOY_BORG_BINARY:-false}" == "true" ]]; then
@@ -40,6 +44,7 @@ if [[ "${DEPLOY_BORG_BINARY:-false}" == "true" ]]; then
         sudo mv borg-linux-glibc228 /usr/bin/borg
         sudo chmod +x /usr/bin/borg
         which borg
+        rm borg-linux*
     fi
 fi
 
