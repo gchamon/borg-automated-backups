@@ -42,6 +42,7 @@ CRONJOB
 done
 
 cat >"$borg_backup_scripts_folder"/run_all.sh <<SCRIPT
+#!/bin/bash
 for folder_to_backup in ${FOLDERS_TO_BACKUP[@]}; do
   backup_script="$borg_backup_scripts_folder/\$folder_to_backup.sh"
   bash \$backup_script
@@ -49,4 +50,35 @@ done
 SCRIPT
 chmod +x "$borg_backup_scripts_folder"/run_all.sh
 
-echo "$CRON_SCHEDULE root /bin/bash $borg_backup_scripts_folder/run_all.sh" >"/etc/cron.d/borg_backup"
+if [[ "$CRON_TRIGGER" == "cron" ]]; then
+    echo "$CRON_SCHEDULE root /bin/bash $borg_backup_scripts_folder/run_all.sh" >"/etc/cron.d/borg_backup"
+elif [[ "$CRON_TRIGGER" == "systemd" ]]; then
+    sudo cat >/etc/systemd/system/borg-backup.service <<EOF
+[Unit]
+Description=Automated Borg Backup
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/opt/borg-backups/run_all.sh
+EnvironmentFile=/etc/environment
+User=root
+Group=root
+EOF
+    sudo cat >/etc/systemd/system/borg-backup.timer <<EOF
+[Unit]
+Description=Runs Borg Backup daily
+
+[Timer]
+OnCalendar=$CRON_SCHEDULE
+Persistent=true
+RandomizedDelaySec=5m
+Unit=borg-backup.service
+
+[Install]
+WantedBy=timers.target
+EOF
+    sudo systemctl daemon-reload
+    sudo systemctl enable --now borg-backup.timer
+fi

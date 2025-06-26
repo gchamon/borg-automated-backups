@@ -56,7 +56,8 @@ sudo echo "BORG_PASSPHRASE={your_long_passphrase}" >> /etc/environment
 From `conf.env`:
 
 - `BACKUP_FOLDER`: (Required) The destination folder where backups will be stored
-- `CRON_SCHEDULE`: (Required) The schedule for automatic backups (in cron format)
+- `CRON_SCHEDULE`: (Required) The schedule for automatic backups. The format depends on the trigger mechanism (either `cron`` or`systemd`). Note that the program won't validate the schedule syntax and will accept it as-is.
+- `CRON_TRIGGER`: (Required) Which mechanism to trigger the cron jobs. Accepted values: `cron`, `systemd`
 - `DEPLOY_BORG_BINARY`: (Optional) Set to "true" if you want the script to deploy its own Borg binary instead of using the system package. Defaults to false. When set, it downloads the binary from [Borg Backup release page](https://github.com/borgbackup/borg/releases/tag/1.4.0).
 
 From `/etc/environment`:
