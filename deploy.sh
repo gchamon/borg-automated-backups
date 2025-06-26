@@ -30,6 +30,17 @@ else
     exit_fail=true
 fi
 
+if test -n "${CRON_TRIGGER-}"; then
+    if [[ "$CRON_TRIGGER" =~ cron|systemd ]]; then
+        echo "Using cron trigger: $CRON_TRIGGER"
+    else
+        echo "ERROR: CRON_TRIGGER should be cron or systemd, got $CRON_TRIGGER"
+    fi
+else
+    echo -e "${COLOR_RED}Please set CRON_TRIGGER env var${COLOR_NONE}"
+    exit_fail=true
+fi
+
 if [[ "$exit_fail" == true ]]; then
     echo Fix the errors above and retry. Exiting...
     exit 1
@@ -49,6 +60,7 @@ if [[ "${DEPLOY_BORG_BINARY:-false}" == "true" ]]; then
 fi
 
 echo testing borg installation...
+borg --version
 borg_version=$(borg --version | cut -d ' ' -f2)
 if ! [[ "$borg_version" =~ ^1\.4 ]]; then
     echo borg version is $borg_version, but the required version is 1.4.x
