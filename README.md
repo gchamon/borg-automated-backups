@@ -34,7 +34,7 @@ Required packages:
 You can install them on Arch Linux with:
 
 ```bash
-sudo pacman -S borg cronie logrotate
+pacman -S borg cronie logrotate
 ```
 
 ## Installation
@@ -46,7 +46,7 @@ sudo pacman -S borg cronie logrotate
 5. Set up the encryption passphrase:
 
 ```bash
-sudo echo "BORG_PASSPHRASE={your_long_passphrase}" >> /etc/environment
+echo "BORG_PASSPHRASE={your_long_passphrase}" >> /etc/environment
 ```
 
 ## Configuration
@@ -79,7 +79,7 @@ You can change the directories for backup by modifying `conf.env`.
 Deploy the backup system:
 
 ```bash
-sudo bash deploy.sh
+bash deploy.sh
 # To use custom Borg binary deployment, set DEPLOY_BORG_BINARY="true"
 ```
 
