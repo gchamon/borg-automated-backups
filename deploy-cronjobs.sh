@@ -6,7 +6,7 @@ borg_backup_logs_folder=/var/log/borg_backups
 mkdir --parents "$borg_backup_scripts_folder"
 mkdir --parents $borg_backup_logs_folder
 
-for folder_to_backup in "${folders_to_backup[@]}"; do
+for folder_to_backup in "${FOLDERS_TO_BACKUP[@]}"; do
   backup_script="$borg_backup_scripts_folder/$folder_to_backup.sh"
   cat > "$backup_script" <<CRONJOB
 #!/usr/bin/env bash
@@ -44,7 +44,7 @@ CRONJOB
 done
 
 cat > "$borg_backup_scripts_folder"/run_all.sh <<SCRIPT
-for folder_to_backup in ${folders_to_backup[@]}; do
+for folder_to_backup in ${FOLDERS_TO_BACKUP[@]}; do
   backup_script="$borg_backup_scripts_folder/\$folder_to_backup.sh"
   bash \$backup_script
 done

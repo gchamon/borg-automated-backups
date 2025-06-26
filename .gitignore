@@ -1,3 +1,6 @@
+# IDE/env specific
 .idea/
-env
 .aider*
+
+# Project specific
+conf.env
