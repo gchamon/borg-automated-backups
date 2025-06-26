@@ -37,9 +37,6 @@ You can install them on Arch Linux with:
 sudo pacman -S borg cronie logrotate
 ```
 
-Note: On Arch Linux, the package is named 'borg' instead of 'borgbackup', and 'cronie'
-provides the cron functionality.
-
 ## Installation
 
 1. Clone this repository
@@ -72,19 +69,16 @@ The following directories are backed up by default:
 
 - /home
 - /etc
-- /srv
 - /boot
-- /opt
-- /usr
 
-You can change the directories for backup by copying `dist.env` into `env` and modifying it.
+You can change the directories for backup by modifying `conf.env`.
 
 ## Usage
 
 Deploy the backup system:
 
 ```bash
-sudo sh -c 'CRON_SCHEDULE="0 13 * * *" BACKUP_FOLDER=/media/remote-server/backups bash deploy.sh'
+sudo bash deploy.sh
 # To use custom Borg binary deployment, set DEPLOY_BORG_BINARY="true"
 ```
 
@@ -98,8 +92,6 @@ The default schedule `0 13 * * *` runs backups daily at 13:00.
 - Each directory is backed up to its own Borg repository
 
 ## Troubleshooting
-
-Common issues:
 
 - If backups fail, check the logs in `/var/log/borg_backups/`
 - Ensure BORG_PASSPHRASE is correctly set in /etc/environment
