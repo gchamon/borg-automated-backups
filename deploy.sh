@@ -52,8 +52,8 @@ if [[ "${DEPLOY_BORG_BINARY:-false}" == "true" ]]; then
     else
         echo deploying borg binary...
         wget https://github.com/borgbackup/borg/releases/download/1.4.0/borg-linux-glibc228
-        sudo mv borg-linux-glibc228 /usr/bin/borg
-        sudo chmod +x /usr/bin/borg
+        mv borg-linux-glibc228 /usr/bin/borg
+        chmod +x /usr/bin/borg
         which borg
         rm borg-linux*
     fi
