@@ -4,6 +4,7 @@
 - [borg-automated-backups](#borg-automated-backups)
   - [Description](#description)
   - [Dependencies](#dependencies)
+    - [Choosing between systemd and cron](#choosing-between-systemd-and-cron)
   - [Installation](#installation)
   - [Configuration](#configuration)
     - [Environment Variables](#environment-variables)
@@ -29,13 +30,22 @@ Required packages:
 
 - `borgbackup`: For creating and managing backups
 - `logrotate`: For managing log file rotation
-- `cron` or `systemd`: For scheduling backup jobs
+- `cron` or `systemd`: For scheduling backup jobs.
 
 You can install them on Arch Linux with:
 
 ```bash
 pacman -S borg cronie logrotate
 ```
+
+### Choosing between systemd and cron
+
+`systemd` is the recommended package. `cron` is significantly simpler than
+`systemd`, but it requires the system being active at the backup schedule,
+otherwise the backup won't trigger. `systemd` will trigger the backup as soon
+as the system comes online after the trigger schedule. This means that with
+`systemd` the system will never miss a backup, while with `cron` it can
+potentially never trigger the backup, if the trigger schedule is poorly chosen.
 
 ## Installation
 
