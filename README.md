@@ -125,7 +125,8 @@ fi
 
 ## Troubleshooting
 
-- If backups fail, check the logs in `/var/log/borg_backups/`
+- If backups fail, check the logs in `/var/log/borg_backups/`. Alternatively,
+if using `systemd`, check the logs using `journalctl -u borg-backup`
 - Ensure BORG_PASSPHRASE is correctly set in /etc/environment
 - Verify that the backup destination has sufficient space
 - Check that the backup user has appropriate permissions
