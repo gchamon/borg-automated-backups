@@ -5,11 +5,12 @@
   - [Description](#description)
   - [Dependencies](#dependencies)
     - [Choosing between systemd and cron](#choosing-between-systemd-and-cron)
-  - [Installation](#installation)
+  - [Preparation steps](#preparation-steps)
   - [Configuration](#configuration)
     - [Environment Variables](#environment-variables)
     - [Default Backup Directories](#default-backup-directories)
-  - [Usage](#usage)
+  - [Installation](#installation)
+  - [Removal](#removal)
   - [Backup Strategy](#backup-strategy)
   - [Troubleshooting](#troubleshooting)
 <!--toc:end-->
@@ -48,7 +49,7 @@ as the system comes online after the trigger schedule. This means that with
 `systemd` the system will never miss a backup, while with `cron` it can
 potentially never trigger the backup, if the trigger schedule is poorly chosen.
 
-## Installation
+## Preparation steps
 
 1. Clone this repository
 2. Ensure you have all required dependencies installed
@@ -86,7 +87,7 @@ The following directories are backed up by default:
 
 You can change the directories for backup by modifying `conf.env`.
 
-## Usage
+## Installation
 
 Deploy the backup system:
 
@@ -95,6 +96,25 @@ sudo bash deploy.sh
 ```
 
 The default schedule `0 13 * * *` runs backups daily at 13:00.
+
+## Removal
+
+To reverse the deployment of this tools, you just have to remove the deployed
+files and stop the systemd unit:
+
+```bash
+sudo rm -rf /opt/borg-backups/*.sh /var/log/borg_backups/
+
+# Remove cron schedule if necessary
+[[ -f "/etc/cron.d/borg_backup" ]] && sudo rm -rf "/etc/cron.d/borg_backup"
+
+# Remove systemd unit files if necessary
+if [[ -f "/etc/systemd/system/borg-backup.timer" ]]; then
+  sudo systemctl disable --now borg-backup.timer
+  sudo rm -rf /etc/systemd/system/borg-backup.{timer,service}
+  sudo systemctl daemon-reload
+fi
+```
 
 ## Backup Strategy
 
