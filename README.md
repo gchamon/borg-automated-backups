@@ -14,7 +14,8 @@
   - [Troubleshooting](#troubleshooting)
 <!--toc:end-->
 
-Automated backup solution using Borg Backup for critical system directories.
+Automated backup solution using [Borg
+Backup](https://github.com/borgbackup/borg) for critical system directories.
 
 ## Description
 
