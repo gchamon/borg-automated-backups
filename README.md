@@ -68,6 +68,7 @@ echo "BORG_PASSPHRASE={your_long_passphrase}" >> /etc/environment
 From `conf.env`:
 
 - `BACKUP_FOLDER`: (Required) The destination folder where backups will be stored
+- `BACKUP_RETENTION_DAYS`: (Optional) How long (in days) to keep the backups before pruning. Default: 7
 - `FOLDERS_TO_BACKUP`: (Required) Which top-level system folders to backup
 - `CRON_SCHEDULE`: (Required) The schedule for automatic backups. The format depends on the trigger mechanism (either `cron` or`systemd`). Note that the program won't validate the schedule syntax and will accept it as-is.
 - `CRON_TRIGGER`: (Required) Which mechanism to trigger the cron jobs. Accepted values: `cron`, `systemd`

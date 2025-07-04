@@ -26,7 +26,7 @@ borg create \\
 
 echo 'pruning archive...'
 borg prune -v --list \\
-  --keep-within=7d \\
+  --keep-within=${BACKUP_RETENTION_DAYS:-7}d \\
   --keep-last=1 \\
   $BACKUP_FOLDER/$folder_to_backup
 
