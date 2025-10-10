@@ -6,11 +6,14 @@ borg_backup_logs_folder=/var/log/borg_backups
 mkdir --parents "$borg_backup_scripts_folder"
 mkdir --parents $borg_backup_logs_folder
 
+echo '#!/bin/bash' >"$borg_backup_scripts_folder"/run_all.sh
+
 for folder_to_backup in "${FOLDERS_TO_BACKUP[@]}"; do
-    backup_script="$borg_backup_scripts_folder/$folder_to_backup.sh"
+    filename="$(filename-from-path $folder_to_backup)"
+    backup_script="$borg_backup_scripts_folder/$filename.sh"
     cat >"$backup_script" <<CRONJOB
 #!/usr/bin/env bash
-exec > >(tee -a $borg_backup_logs_folder/$folder_to_backup.log) 2>&1
+exec > >(tee -a $borg_backup_logs_folder/$filename.log) 2>&1
 echo "[start] \$(date)"
 start=\$(date +%s)
 
@@ -21,17 +24,17 @@ echo 'creating archive entry...'
 borg create \\
   -v --stats \\
   --compression lz4 \\
-  $BACKUP_FOLDER/$folder_to_backup::\$(date '+%Y-%m-%dT%H:%M:%S') \\
+  $BACKUP_FOLDER/$filename::\$(date '+%Y-%m-%dT%H:%M:%S') \\
   /$folder_to_backup
 
 echo 'pruning archive...'
 borg prune -v --list \\
   --keep-within=${BACKUP_RETENTION_DAYS:-7}d \\
   --keep-last=1 \\
-  $BACKUP_FOLDER/$folder_to_backup
+  $BACKUP_FOLDER/$filename
 
 echo 'compacting archive...'
-borg compact $BACKUP_FOLDER/$folder_to_backup
+borg compact $BACKUP_FOLDER/$filename
 
 end=\$(date +%s)
 echo "[end] \$(date)"
@@ -39,15 +42,9 @@ echo "[runtime] \$((end-start))"
 
 CRONJOB
     chmod +x "$backup_script"
+    echo "bash $backup_script" >>"$borg_backup_scripts_folder"/run_all.sh
 done
 
-cat >"$borg_backup_scripts_folder"/run_all.sh <<SCRIPT
-#!/bin/bash
-for folder_to_backup in ${FOLDERS_TO_BACKUP[@]}; do
-  backup_script="$borg_backup_scripts_folder/\$folder_to_backup.sh"
-  bash \$backup_script
-done
-SCRIPT
 chmod +x "$borg_backup_scripts_folder"/run_all.sh
 
 if [[ "$CRON_TRIGGER" == "cron" ]]; then

@@ -2,7 +2,8 @@
 source constants.sh
 
 for folder_to_backup in "${FOLDERS_TO_BACKUP[@]}"; do
-    repo_folder="$BACKUP_FOLDER"/"$folder_to_backup"
+    filename="$(filename-from-path $folder_to_backup)"
+    repo_folder="$BACKUP_FOLDER"/"$filename"
     if [[ -d $repo_folder ]]; then
         echo "$repo_folder exists. Skipping..."
     else
