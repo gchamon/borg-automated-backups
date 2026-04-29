@@ -53,12 +53,14 @@ potentially never trigger the backup, if the trigger schedule is poorly chosen.
 
 1. Clone this repository
 2. Ensure you have all required dependencies installed
+  a. Alternatively, you can let the script automatically download and manage
+     the deployment of the borgbackup binary file
 3. Make sure you have sufficient permissions to access the backup locations
 4. `cp dist.env conf.env` and modify `conf.env` accordingly
 5. Set up the encryption passphrase:
 
 ```bash
-echo "BORG_PASSPHRASE={your_long_passphrase}" >> /etc/environment
+echo "BORG_PASSPHRASE={your_long_passphrase}" | sudo tee --append /etc/environment
 ```
 
 ## Configuration
